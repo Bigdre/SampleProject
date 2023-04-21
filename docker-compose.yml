@@ -1,0 +1,20 @@
+version: "3.10"
+
+services:
+  flask-api:
+    build: Python
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo-db
+  svelte-frontend:
+    build: Svelte\svelte-frontend
+    ports:
+      - "80:80"
+  mongo-db:
+    image: mongo:4.4
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

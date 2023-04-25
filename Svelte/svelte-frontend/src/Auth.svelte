@@ -4,6 +4,7 @@
     import { onMount } from "svelte";
     import { Auth0Client } from "@auth0/auth0-spa-js";
     import Tasks from "./Tasks.svelte";
+    import ColorPicker from './ColorPicker.svelte';
     import {
         auth0ClientStore,
         isAuthenticatedStore,
@@ -22,6 +23,7 @@
     });
     let accessToken = "";
     let userProfile = "";
+    let nickname = "";
 
     let permissionsLoaded = false;
     userPermissionsStore.subscribe(($userPermissions) => {
@@ -49,7 +51,9 @@
 
         if (isAuthenticated) {
             accessToken = await auth0Client.getTokenSilently();
-            userProfile = JSON.stringify(await auth0Client.getUser(), null, 2);
+            let authUserProfile = await auth0Client.getUser();
+            userProfile = JSON.stringify(authUserProfile, null, 2);
+            nickname = authUserProfile.nickname;
             const tokenClaims = await auth0Client.getTokenSilently();
             if (tokenClaims && tokenClaims.permissions) {
                 userPermissionsStore.set(tokenClaims.permissions);
@@ -63,6 +67,8 @@
     async function checkSession() {
         try {
             await auth0Client.getTokenSilently();
+            let authUserProfile = await auth0Client.getUser();
+            nickname = authUserProfile.nickname;
             isAuthenticated = true;
             isAuthenticatedStore.set(isAuthenticated);
             userProfile = JSON.stringify(await auth0Client.getUser(), null, 2);
@@ -89,11 +95,10 @@
     <p>Welcome to our page!</p>
     {#if isAuthenticated}
         <button on:click={logout}>Log out</button>
+        <ColorPicker bind:nicknameProp={nickname} />
         <div>
             <p>
-                You're seeing this content because you're currently <strong
-                    >logged in</strong
-                >.
+                You're seeing this content because you're currently <strong>logged in</strong>.
             </p>
             <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>

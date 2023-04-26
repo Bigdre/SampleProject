@@ -4,13 +4,14 @@
     import { onMount } from "svelte";
     import { Auth0Client } from "@auth0/auth0-spa-js";
     import Tasks from "./Tasks.svelte";
-    import ColorPicker from './ColorPicker.svelte';
+    import ColorPicker from "./ColorPicker.svelte";
     import {
         auth0ClientStore,
         isAuthenticatedStore,
         userPermissionsStore,
         initializeAuth0Client,
     } from "./auth0Store.js";
+    import NavColorPicker from "./NavColorPicker.svelte";
 
     let auth0Client;
     auth0ClientStore.subscribe(($auth0Client) => {
@@ -96,9 +97,12 @@
     {#if isAuthenticated}
         <button on:click={logout}>Log out</button>
         <ColorPicker bind:nicknameProp={nickname} />
+        <NavColorPicker />
         <div>
             <p>
-                You're seeing this content because you're currently <strong>logged in</strong>.
+                You're seeing this content because you're currently <strong
+                    >logged in</strong
+                >.
             </p>
             <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>

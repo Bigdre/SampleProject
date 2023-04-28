@@ -1,21 +1,62 @@
 <!-- SideNavbar.svelte -->
 <script>
-    import { writable } from "svelte/store";
+    import { writable, get } from "svelte/store";
     import { navbarColor } from "./navbarStore";
+    import { auth0ClientStore, isAuthenticatedStore } from "./auth0Store.js";
+    import { push } from "svelte-spa-router";
 
     let navColor;
     navbarColor.subscribe((navbarColor) => {
         navColor = navbarColor;
     });
 
-    // Write your JavaScript logic here, if needed
-    const sideLinks = writable([
+    let auth0Store;
+    auth0ClientStore.subscribe((auth0ClientStore) => {
+        auth0Store = auth0ClientStore;
+    });
+
+    let isAuthenticated;
+    isAuthenticatedStore.subscribe((isAuthenticatedStore) => {
+        isAuthenticated = isAuthenticatedStore;
+    });
+
+    function logout() {
+        auth0Store.logout({
+            returnTo: window.location.origin,
+        });
+    }
+
+    async function login() {
+        await auth0Store.loginWithRedirect({
+            redirect_uri: window.location.origin,
+        });
+    }
+
+    const baseLinks = [
         { title: "Dashboard", url: "/dashboard" },
         { title: "Profile", url: "/profile" },
         { title: "Settings", url: "/settings" },
         { title: "Tasks", url: "/tasks" },
-        { title: "Logout", url: "/logout" },
-    ]);
+    ];
+    const sideLinks = writable(baseLinks);
+
+    function updateSideLinks(authenticated) {
+        if (authenticated) {
+            sideLinks.set([
+                ...baseLinks,
+                { title: "Logout", url: "#", func: logout },
+            ]);
+        } else {
+            sideLinks.set([
+                ...baseLinks,
+                { title: "Login", url: "#", func: login },
+            ]);
+        }
+    }
+
+    $: {
+        updateSideLinks(isAuthenticated);
+    }
 
     let navbarElement; // Add a reference for the navbar element
 
@@ -28,7 +69,19 @@
 
 <nav class="side-navbar" bind:this={navbarElement}>
     {#each $sideLinks as link}
-        <a href={link.url} class="side-nav-link">{link.title}</a>
+        <a
+            href="javascript:void(0);"
+            class="side-nav-link"
+            on:click={() => {
+                if (link.func) {
+                    link.func();
+                } else {
+                    push(link.url);
+                }
+            }}
+        >
+            {link.title}
+        </a>
     {/each}
 </nav>
 

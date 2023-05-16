@@ -4,8 +4,8 @@
 		ButtonVariants,
 		ButtonSizes,
 		ButtonTypes
-	} from '$lib/components/common/components/BaseButton';
-	import BaseButton from '$lib/components/common/components/BaseButton.svelte';
+	} from '$lib/components/common/components/BaseButton/BaseButton';
+	import BaseButton from '$lib/components/common/components/BaseButton/BaseButton.svelte';
 
 	const props: IBaseButtonProps = {
 		variant: ButtonVariants.Primary,

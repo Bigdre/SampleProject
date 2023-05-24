@@ -3,6 +3,7 @@
 
 	import type { IBaseDropdownProps } from './BaseDropdown';
 	import { buttonProps, dropdownLinkProps } from './BaseDropdown';
+	import DropdownItem from './DropdownItem/DropdownItem.svelte';
 
 	export let props: IBaseDropdownProps;
 </script>
@@ -17,9 +18,7 @@
 	<ul class="dropdown-menu">
 		<!-- THIS NEEDS TO BE PASSED A LIST -->
 		{#each props.items as item}
-			<li>
-				<BaseButton props={{ ...dropdownLinkProps, href: item.href }}>{item.label}</BaseButton>
-			</li>
+			<DropdownItem props={item} />
 		{/each}
 	</ul>
 </div>

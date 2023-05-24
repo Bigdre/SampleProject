@@ -5,6 +5,46 @@ import {
     ButtonTags,
     ButtonToggle
 } from '$lib/components/common/components/BaseButton/BaseButton';
+import type { IDropdownItemProps } from './DropdownItem/DropdownItem'
+
+/**
+ * @param Single 'dropdown'
+    @param Group 'btn-group'
+    @param Center 'dropdown-center'
+ */
+export enum DropdownVariant {
+    Single = 'dropdown',
+    Group = 'btn-group',
+    Center = 'dropdown-center',
+}
+
+/**
+     * @param Up 'dropup'
+     * @param Down ''
+     * @param Left 'dropstart'
+     * @param Right 'dropend'
+     */
+export enum DropDirection {
+    Up = 'dropup',
+    Down = '',
+    Left = 'dropstart',
+    Right = 'dropend'
+}
+
+/**
+     * @param variant DropdownVariant
+     * @param direction DropDirection
+     * @param isSplit boolean
+     * @param label string
+     * @param items Record<string, string>
+     */
+export interface IBaseDropdownProps {
+    variant: DropdownVariant,
+    direction: DropDirection,
+    isSplit: boolean,
+    label: string,
+    items: IDropdownItemProps[]
+}
 
 /**
  *  @param variant ButtonVariants.Primary
@@ -26,7 +66,7 @@ export const buttonProps: IBaseButtonProps = {
     toggle: ButtonToggle.Inactive,
     customClasses: 'dropdown-toggle',
     dataBsToggle: 'dropdown',
-    ariaExpanded: false
+    ariaExpanded: false,
 };
 
 /**
@@ -47,49 +87,3 @@ export const dropdownLinkProps: IBaseButtonProps = {
     toggle: ButtonToggle.Inactive,
     customClasses: 'dropdown-item'
 };
-
-/**
- * @param Single 'dropdown'
-    @param Group 'btn-group'
-    @param Center 'dropdown-center'
- */
-export enum DropdownVariant {
-    Single = 'dropdown',
-    Group = 'btn-group',
-    Center = 'dropdown-center',
-
-}
-
-/**
-     * @param Up 'dropup'
-     * @param Down ''
-     * @param Left 'dropstart'
-     * @param Right 'dropend'
-     */
-export enum DropDirection {
-    Up = 'dropup',
-    Down = '',
-    Left = 'dropstart',
-    Right = 'dropend'
-
-}
-
-/**
-     * @param variant DropdownVariant
-     * @param direction DropDirection
-     * @param isSplit boolean
-     * @param label string
-     * @param items Record<string, string>
-     */
-export interface IBaseDropdownProps {
-    
-    variant: DropdownVariant,
-    direction: DropDirection,
-    isSplit: boolean,
-    label: string,
-    items: Record<string, string>
-}
-
-
-// let { variant, direction, isSplit, label} = props;
-// let split = isSplit ? "dropdown-toggle-split" : "";

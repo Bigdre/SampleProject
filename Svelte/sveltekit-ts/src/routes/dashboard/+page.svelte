@@ -27,7 +27,12 @@
 		variant: DropdownVariant.Single,
 		direction: DropDirection.Down,
 		isSplit: false,
-		label: 'lAbEl'
+		label: 'links',
+		items: [
+			{ value: 'sublink1', href: '/dashboard', isVisible: true, isSelected: true },
+			{ value: 'sublink2', href: '/test', isVisible: true, isSelected: false },
+			{ value: 'sublink3', href: '/settings', isVisible: false, isSelected: false }
+		]
 	};
 </script>
 

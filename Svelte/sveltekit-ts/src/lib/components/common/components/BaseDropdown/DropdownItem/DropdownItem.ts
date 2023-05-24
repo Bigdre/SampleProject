@@ -1,5 +1,6 @@
 export interface IDropdownItemProps {
-    key: string;
-    value?: string | undefined;
+    value: string;
     href?: string | undefined;
+    isVisible: boolean;
+    isSelected: boolean;
 }

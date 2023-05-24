@@ -33,23 +33,27 @@
 	export let link: Link;
 </script>
 
-{#if isAuthenticated && link.title == 'Auth'}
-	<button class="link-button auth" on:click={logout}> Logout </button>
-{:else if !isAuthenticated && link.title == 'Auth'}
-	<button class="link-button auth" on:click={login}> Login </button>
-{:else if link.sublinks}
-	<div class="dropdown">
-		<a class="link-button dropdown-toggle" href={link.href} data-bs-toggle="dropdown"
-			>{link.title}</a
-		>
-		<ul class="dropdown-menu">
-			{#each link.sublinks as sublink (sublink.href)}
-				<li><a class="link-button" href={sublink.href}>{sublink.title}</a></li>
-			{/each}
-		</ul>
-	</div>
-{:else if link.title != 'Auth'}
-	<a class="link-button" href={link.href}>{link.title}</a>
+{#if isAuthenticated || !(link.needsAuth ?? false)}
+	{#if link.title == 'Auth'}
+		{#if isAuthenticated}
+			<button class="link-button auth" on:click={logout}> Logout </button>
+		{:else}
+			<button class="link-button auth" on:click={login}> Login </button>
+		{/if}
+	{:else if link.sublinks}
+		<div class="dropdown">
+			<a class="link-button dropdown-toggle" href={link.href} data-bs-toggle="dropdown"
+				>{link.title}</a
+			>
+			<ul class="dropdown-menu">
+				{#each link.sublinks as sublink (sublink.href)}
+					<li><a class="link-button" href={sublink.href}>{sublink.title}</a></li>
+				{/each}
+			</ul>
+		</div>
+	{:else}
+		<a class="link-button" href={link.href}>{link.title}</a>
+	{/if}
 {/if}
 
 <style>

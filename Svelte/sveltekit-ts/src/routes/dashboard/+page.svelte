@@ -3,21 +3,34 @@
 		type IBaseButtonProps,
 		ButtonVariants,
 		ButtonSizes,
-		ButtonTypes
+		ButtonTags,
+		ButtonToggle
 	} from '$lib/components/common/components/BaseButton/BaseButton';
 	import BaseButton from '$lib/components/common/components/BaseButton/BaseButton.svelte';
+
+	import {
+		type IBaseDropdownProps,
+		DropdownVariant,
+		DropDirection
+	} from '$lib/components/common/components/BaseDropdown/BaseDropdown';
+	import BaseDropdown from '$lib/components/common/components/BaseDropdown/BaseDropdown.svelte';
 
 	const props: IBaseButtonProps = {
 		variant: ButtonVariants.Primary,
 		size: ButtonSizes.Medium,
-		type: ButtonTypes.Button,
+		tag: ButtonTags.Button,
 		isOutline: false,
 		isDisabled: false,
-		toggle: undefined,
-		customCss: undefined,
-		href: undefined
+		toggle: ButtonToggle.Inactive
+	};
+	const dropdownProps: IBaseDropdownProps = {
+		variant: DropdownVariant.Single,
+		direction: DropDirection.Down,
+		isSplit: false,
+		label: 'lAbEl'
 	};
 </script>
 
 <BaseButton {props}>Test</BaseButton>
-<BaseButton props={{ ...props, type: ButtonTypes.Input, isOutline: true }} />
+<BaseButton props={{ ...props, tag: ButtonTags.Input, isOutline: true }} />
+<BaseDropdown props={dropdownProps} />

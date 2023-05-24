@@ -5,6 +5,14 @@
 	import { navbarColor } from './navbarStore';
 	import { auth0ClientStore, isAuthenticatedStore } from './auth0Store.js';
 	import { push } from 'svelte-spa-router';
+	import BaseButton from '$lib/components/common/components/BaseButton/BaseButton.svelte';
+	import {
+		type IBaseButtonProps,
+		ButtonVariants,
+		ButtonSizes,
+		ButtonTags
+	} from '$lib/components/common/components/BaseButton/BaseButton';
+	import BaseNavlink from './components/common/components/BaseNavlink/BaseNavlink.svelte';
 
 	let navColor: string;
 	navbarColor.subscribe((navbarColor: string) => {
@@ -21,6 +29,13 @@
 		isAuthenticated = isAuthenticatedStore ?? false;
 	});
 
+	let navbarElement: HTMLElement; // Add a reference for the navbar element
+
+	$: {
+		if (navColor && navbarElement) {
+			navbarElement.style.backgroundColor = navColor;
+		}
+	}
 	function logout(): void {
 		auth0Store.logout({
 			returnTo: window.location.origin
@@ -33,53 +48,40 @@
 		});
 	}
 
+	const props: IBaseButtonProps = {
+		variant: ButtonVariants.Primary,
+		size: ButtonSizes.Medium,
+		tag: ButtonTags.Button,
+		isOutline: false,
+		isDisabled: false
+	};
+
 	interface Link {
 		title: string;
-		url: string;
+		href: string;
 		func?: () => void;
+		sublinks?: Link[];
+		needsAuth?: boolean;
 	}
+
+	const testLinks: Link[] = [
+		{ title: 'sublink1', href: '/dashboard' },
+		{ title: 'sublink2', href: '/test' }
+	];
 
 	const baseLinks: Link[] = [
-		{ title: 'Dashboard', url: '/dashboard' },
-		{ title: 'Profile', url: '/profile' },
-		{ title: 'Settings', url: '/settings' },
-		{ title: 'Tasks', url: '/tasks' },
-		{ title: 'Test', url: '/test' }
+		{ title: 'Dashboard', href: '/dashboard', sublinks: testLinks },
+		{ title: 'Profile', href: '/profile' },
+		{ title: 'Settings', href: '/settings', needsAuth: true },
+		{ title: 'Tasks', href: '/tasks' },
+		{ title: 'Test', href: '/test' },
+		{ title: 'Auth', href: '#' }
 	];
-	const sideLinks: Writable<Link[]> = writable(baseLinks);
-
-	function updateSideLinks(authenticated: boolean): void {
-		if (authenticated) {
-			sideLinks.set([...baseLinks, { title: 'Logout', url: '#', func: logout }]);
-		} else {
-			sideLinks.set([...baseLinks, { title: 'Login', url: '#', func: login }]);
-		}
-	}
-
-	$: {
-		updateSideLinks(isAuthenticated);
-	}
-
-	let navbarElement: HTMLElement; // Add a reference for the navbar element
-
-	$: {
-		if (navColor && navbarElement) {
-			navbarElement.style.backgroundColor = navColor;
-		}
-	}
 </script>
 
 <nav class="side-navbar" bind:this={navbarElement}>
-	{#each $sideLinks as link}
-		{#if link.func}
-			<button class="link-button" on:click={() => link.func?.()}>
-				{link.title}
-			</button>
-		{:else}
-			<a class="link-button" href={link.url}>
-				{link.title}
-			</a>
-		{/if}
+	{#each baseLinks as link}
+		<BaseNavlink {link} />
 	{/each}
 </nav>
 
@@ -101,7 +103,7 @@
 		border: none;
 		cursor: pointer;
 		text-decoration: none;
-		color: white;
+		color: rgb(26, 226, 0);
 		font: inherit;
 		padding: 8px 16px;
 		margin-bottom: 10px;

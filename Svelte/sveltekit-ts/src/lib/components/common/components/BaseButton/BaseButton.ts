@@ -1,22 +1,48 @@
+// BaseButton.ts
+
+/**
+ *  @param Primary 'primary'
+    @param Secondary 'secondary'
+    @param Success 'success'
+    @param Danger 'danger'
+    @param Warning 'warning'
+    @param Info 'info'
+    @param Light 'light'
+    @param Dark 'dark'
+    @param Link 'link'
+ */
 export enum ButtonVariants {
-    Primary,
-    Secondary,
-    Success,
-    Danger,
-    Warning,
-    Info,
-    Light,
-    Dark,
-    Link
+    Primary = 'primary',
+    Secondary = 'secondary',
+    Success = 'success',
+    Danger = 'danger',
+    Warning = 'warning',
+    Info = 'info',
+    Light = 'light',
+    Dark = 'dark',
+    Link = 'link'
 }
 
+/**
+ *  @param Large 'btn-lg'
+    @param Medium ''
+    @param Small 'btn-sm'
+ */
 export enum ButtonSizes {
-    Large,
-    Medium,
-    Small
+    Large = 'btn-lg',
+    Medium = '',
+    Small = 'btn-sm'
 }
 
-export enum ButtonTypes {
+/**
+ * This value is chosen to select the button tag element to be generated
+ *  @param Link 
+    @param Button 
+    @param Input 
+    @param Submit 
+    @param Input 
+ */
+export enum ButtonTags {
     Link,
     Button,
     Input,
@@ -24,48 +50,51 @@ export enum ButtonTypes {
     Reset
 }
 
+
+/**
+ *  @param Inactive ''
+    @param Active 'active'
+ */
 export enum ButtonToggle {
-    Inactive,
-    Active
+    Inactive = '',
+    Active = 'active',
 }
 
+/**
+ *  @param variant ButtonVariants
+    @param size ButtonSizes
+    @param tag ButtonTags
+    @param isOutline boolean
+    @param isDisabled boolean
+    @param toggle? ButtonToggle | undefined
+    @param customClasses? string | undefined
+    @param id? string | undefined
+    @param href? string | undefined
+    @param dataBsToggle? string | undefined
+    @param ariaExpanded? boolean | undefined
+ */
 export interface IBaseButtonProps {
     variant: ButtonVariants,
     size: ButtonSizes,
-    type: ButtonTypes,
-    toggle: ButtonToggle | undefined,
+    tag: ButtonTags,
     isOutline: boolean,
     isDisabled: boolean,
-    customCss: string | undefined,
-    href: string | undefined,
+    toggle?: ButtonToggle | undefined,
+    customClasses?: string | undefined,
+    id?: string | undefined,
+    href?: string | undefined,
+    dataBsToggle?: string | undefined,
+    ariaExpanded?: boolean | undefined,
 }
 
-export function GetVariant(props: IBaseButtonProps): string {
-    let type = props.isOutline ? "btn-outline" : "btn";
-
-    switch (props.variant) {
-        case ButtonVariants.Primary: return `${type}-primary`;
-        case ButtonVariants.Secondary: return `${type}-secondary`;
-        case ButtonVariants.Success: return `${type}-success`;
-        case ButtonVariants.Danger: return `${type}-danger`;
-        case ButtonVariants.Warning: return `${type}-warning`;
-        case ButtonVariants.Info: return `${type}-info`;
-        case ButtonVariants.Light: return `${type}-light`;
-        case ButtonVariants.Dark: return `${type}-dark`;
-        case ButtonVariants.Link: return `${type}-link`;
-        default: return "";
-    }
-}
-
-export function GetSize(props: IBaseButtonProps) {
-    switch (props.size) {
-        case ButtonSizes.Large: return "btn-lg";
-        case ButtonSizes.Medium: return "";
-        case ButtonSizes.Small: return "btn-sm";
-        default: return "";
-    }
-}
-
+/**
+ * 
+ * @param props 
+ * @returns `btn ${outline}-${variant} ${size} ${toggle} ${disabled} ${customClasses ?? ''} `
+ */
 export function GetCssClass(props: IBaseButtonProps): string {
-    return `btn ${GetVariant(props)} ${GetSize(props)}`;
+    let { variant, size, toggle, isOutline, isDisabled, customClasses } = props;
+    let outline = isOutline ? "btn-outline" : "btn";
+    let disabled = isDisabled ? "disabled" : "";
+    return `btn ${outline}-${variant} ${size} ${toggle} ${disabled} ${customClasses ?? ''} `;
 }

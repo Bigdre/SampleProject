@@ -13,6 +13,8 @@
 		ButtonTags
 	} from '$lib/components/common/components/BaseButton/BaseButton';
 	import BaseNavlink from './components/common/components/BaseNavlink/BaseNavlink.svelte';
+	import type { IDropdownItemProps } from '$lib/components/common/components/BaseDropdown/DropdownItem/DropdownItem';
+	import type { IBaseNavlinkProps } from '$lib/components/common/components/BaseNavlink/BaseNavlink';
 
 	let navColor: string;
 	navbarColor.subscribe((navbarColor: string) => {
@@ -56,20 +58,12 @@
 		isDisabled: false
 	};
 
-	interface Link {
-		title: string;
-		href: string;
-		func?: () => void;
-		sublinks?: Link[];
-		needsAuth?: boolean;
-	}
-
-	const testLinks: Link[] = [
-		{ title: 'sublink1', href: '/dashboard' },
-		{ title: 'sublink2', href: '/test' }
+	const testLinks: IDropdownItemProps[] = [
+		{ value: 'sublink1', href: '/dashboard', isSelected: false, isVisible: true },
+		{ value: 'sublink2', href: '/test', isSelected: false, isVisible: true }
 	];
 
-	const baseLinks: Link[] = [
+	const baseLinks: IBaseNavlinkProps[] = [
 		{ title: 'Dashboard', href: '/dashboard', sublinks: testLinks },
 		{ title: 'Profile', href: '/profile' },
 		{ title: 'Settings', href: '/settings', needsAuth: true },
@@ -81,7 +75,7 @@
 
 <nav class="side-navbar" bind:this={navbarElement}>
 	{#each baseLinks as link}
-		<BaseNavlink {link} />
+		<BaseNavlink props={link} />
 	{/each}
 </nav>
 

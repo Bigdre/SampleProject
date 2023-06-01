@@ -58,7 +58,7 @@ export interface IBaseDropdownProps {
     @param ariaExpanded false
  */
 export const buttonProps: IBaseButtonProps = {
-    variant: ButtonVariants.Primary,
+    variant: ButtonVariants.Link,
     size: ButtonSizes.Medium,
     tag: ButtonTags.Button,
     isOutline: false,

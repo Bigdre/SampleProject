@@ -2,13 +2,13 @@
 	import BaseButton from '$lib/components/common/components/BaseButton/BaseButton.svelte';
 
 	import type { IBaseDropdownProps } from './BaseDropdown';
-	import { buttonProps, dropdownLinkProps } from './BaseDropdown';
+	import { buttonProps } from './BaseDropdown';
 	import DropdownItem from './DropdownItem/DropdownItem.svelte';
 
 	export let props: IBaseDropdownProps;
 </script>
 
-<div class={props.variant}>
+<div class={`${props.variant} ${props.direction}`}>
 	<!-- BUTTON COMPONENT GOES HERE -->
 	{#if '' === ''}
 		<BaseButton props={buttonProps}>{props.label}</BaseButton>

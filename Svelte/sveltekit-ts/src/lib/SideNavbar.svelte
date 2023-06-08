@@ -38,25 +38,6 @@
 			navbarElement.style.backgroundColor = navColor;
 		}
 	}
-	function logout(): void {
-		auth0Store.logout({
-			returnTo: window.location.origin
-		});
-	}
-
-	async function login(): Promise<void> {
-		await auth0Store.loginWithRedirect({
-			redirect_uri: window.location.origin
-		});
-	}
-
-	const props: IBaseButtonProps = {
-		variant: ButtonVariants.Primary,
-		size: ButtonSizes.Medium,
-		tag: ButtonTags.Button,
-		isOutline: false,
-		isDisabled: false
-	};
 
 	const testLinks: IDropdownItemProps[] = [
 		{ value: 'sublink1', href: '/dashboard', isSelected: false, isVisible: true },
